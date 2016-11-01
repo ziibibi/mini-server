@@ -9,9 +9,9 @@ var cookieParser = require('cookie-parser');
  * @author Jānis Radiņš
  */
 var ExpressServer = (function () {
-    function ExpressServer(routes) {
+    function ExpressServer(port, routes) {
+        this.port = port;
         this.routes = routes;
-        this.PORT = this.normalizePort(process.env.PORT || 8080);
     }
     /**
      * Start the server!
@@ -36,8 +36,8 @@ var ExpressServer = (function () {
             var route = _a[_i];
             this.expressApp.use(route.API_URL, route.router);
         }
-        this.expressApp.listen(this.PORT, function () {
-            console.info('ExpressServer started on port:', _this.PORT);
+        this.expressApp.listen(this.port, function () {
+            console.info('ExpressServer started on port:', _this.port);
         });
     };
     /**

@@ -11,11 +11,10 @@ import * as cookieParser from 'cookie-parser';
  */
 export class ExpressServer {
 
-    readonly PORT:boolean|number = this.normalizePort(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
-
     private expressApp:express.Application;
 
-    constructor(private routes:{readonly API_URL:string, readonly router:Router}[]) {
+    constructor(private port:boolean|number,
+                private routes:{readonly API_URL:string, readonly router:Router}[]) {
 
     }
 
@@ -41,8 +40,8 @@ export class ExpressServer {
         for (let route of this.routes) {
             this.expressApp.use(route.API_URL, route.router);
         }
-        this.expressApp.listen(this.PORT, () => {
-            console.info('ExpressServer started on port:', this.PORT)
+        this.expressApp.listen(this.port, () => {
+            console.info('ExpressServer started on port:', this.port)
         });
     }
 

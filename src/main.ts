@@ -3,10 +3,11 @@ import {ExpressServer} from "./server/ExpressServer";
 import {UsersRouter} from "./controller/UsersRouter";
 import {LoginRouter} from "./controller/LoginRouter";
 
-
+/**
+ * Retrieve mongo DB credentials according to https://github.com/openshift/nodejs-ex.git
+ */
 var mongoURL:string = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
 var mongoURLLabel:string;
-
 if (!mongoURL && process.env.DATABASE_SERVICE_NAME) {
     var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
         mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
@@ -36,8 +37,8 @@ mongoose.connect(mongoURL, (err, conn) => {
 });
 
 //Configure and launch server
-let server:ExpressServer = new ExpressServer([
-    new LoginRouter(),
-    new UsersRouter()
-]);
+let server:ExpressServer = new ExpressServer(
+    process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080,
+    [new LoginRouter(), new UsersRouter()]
+);
 server.start();
