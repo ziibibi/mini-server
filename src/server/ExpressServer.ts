@@ -11,7 +11,7 @@ import * as cookieParser from 'cookie-parser';
  */
 export class ExpressServer {
 
-    readonly PORT:boolean|number = this.normalizePort(process.env.PORT || 8080);
+    readonly PORT:boolean|number = this.normalizePort(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 
     private expressApp:express.Application;
 
